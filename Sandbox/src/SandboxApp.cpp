@@ -17,6 +17,6 @@ public:
 
 Hazel::Application* Hazel::CreateApplication()
 {
-	printf("Hal Test.");
+	HZ_ERROR("Hal Error Test.");
 	return new Sandbox();
 }
