@@ -18,8 +18,8 @@ project "Hazel"
     language "C++"
 
 
-    targetdir ("bin/" .. outputdir .. "/Hazel")
-    objdir ("bin-int/" .. outputdir .. "/Hazel")
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files
     {
@@ -29,13 +29,14 @@ project "Hazel"
 
     includedirs
     {
+        "%{prj.name}/src"
         "%{prj.name}/vendor/spdlog/include"
     }
 
     filter "system:windows"
         cppdialect "C++17"
         staticruntime "On"
-        systemversion "10.0.19041.0"
+        systemversion "latest"
 
         defines
         {
@@ -94,17 +95,14 @@ project "Sandbox"
         filter "system:windows"
             cppdialect "C++17"
             staticruntime "On"
-            systemversion "10.0.19041.0"
+            systemversion "latest"
     
             defines
             {
                 "HZ_PLATFORM_WINDOWS"
             }
     
-            -- postbuildcommands
-            -- {
-            --     ("{COPY} %Hazel/bin/%{cfg.buildcfg}-%{cfg.system}x64/Hazel/Hazel.dll" .. outputdir .. "/Sandbox")
-            -- }
+
 
         
         filter "configurations:Debug"
