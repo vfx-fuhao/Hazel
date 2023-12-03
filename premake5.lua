@@ -11,15 +11,27 @@ workspace "Hazel"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}x64"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "Hazel/vendor/GLFW/include"
+
+include "Hazel/vendor/GLFW"
+
 
 project "Hazel"
     location "Hazel"
     kind "SharedLib"
     language "C++"
+    -- staticruntime "off"
+    -- runtime "Debug"
 
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+
+    pchheader "hzpch.h"
+    pchsource "Hazel/src/hzpch.cpp"
 
     files
     {
@@ -29,8 +41,17 @@ project "Hazel"
 
     includedirs
     {
-        "%{prj.name}/src"
-        "%{prj.name}/vendor/spdlog/include"
+        "%{prj.name}/src",
+        "%{prj.name}/vendor/spdlog/include",
+        "%{IncludeDir.GLFW}"
+    }
+
+
+    links
+    {
+        "GLFW",
+        "opengl32.lib",
+        "dwmapi.lib"
     }
 
     filter "system:windows"
@@ -68,6 +89,7 @@ project "Sandbox"
         location "Sandbox"
         kind "ConsoleApp"
         language "C++"
+        -- staticruntime "On"
 
 
         targetdir ("bin/" .. outputdir .. "/Sandbox")
